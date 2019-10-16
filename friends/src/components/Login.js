@@ -1,40 +1,44 @@
-import React, { useState } from "react";
-import { axiosWithAuth } from "../utils/axiosWithAuth";
+import React, { useState } from 'react';
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const Login = props => {
+  const [credentials, setCredentials] = useState({ username: "", password: "" })
 
-    const [ state, setState ] = useState({ credentials: {username: "", password: ""}})
+  const handleChange = e => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value })
+  }
 
-    const handleChange = event => {
-        setState({credentials: {...state.credentials, [event.target.name]: event.target.value}})
-    }
+  const handleSubmit = e => {
+    e.preventDefault();
+    axiosWithAuth().post('/login', credentials)
+      .then(res => {
+        localStorage.setItem('token', res.data.payload)
+        props.history.push('/friends')
+        props.login();
+      })
+      .catch(err => console.log(err))
+    setCredentials({ username: "", password: "" })
+  }
 
-    const login = event => {
-        event.preventDefault();
-        axiosWithAuth()
-            .post("/login", state.credentials)
-            .then(res => {
-                console.log(res);
-                localStorage.setItem("token", res.data.payload);
-                props.history.push("/friends");
-            
-            })
-            .catch(err => console.log(err));
-    }
-
-
-
-    return (
-        <>
-            <h2>Log in here!</h2>
-            <form onSubmit={login}>
-                <input type="text" name="username" placeholder="name" value={state.credentials.username} onChange={handleChange}/>
-                <input type="password" name="password" placeholder="password" value={state.credentials.password} onChange={handleChange}/>
-                <button>Log in!</button>
-            </form>
-        </>
-
-    );
+  return (
+    <div className="login">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="username"
+          value={credentials.username}
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          name="password"
+          value={credentials.password}
+          onChange={handleChange}
+        />
+        <button type="submit">Log in</button>
+      </form>
+    </div>
+  )
 }
 
 export default Login;
