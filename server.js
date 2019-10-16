@@ -16,31 +16,37 @@ let friends = [
     email: 'ben@lambdaschool.com'
   },
   {
-    id: 2,
+    id:2,
+    name: 'Justin',
+    age:26,
+    email:'justin.nichols.93@icloud.com'
+  },
+  {
+    id: 3,
     name: 'Austen',
     age: 45,
     email: 'austen@lambdaschool.com'
   },
   {
-    id: 3,
+    id: 4,
     name: 'Ryan',
     age: 15,
     email: 'ryan@lambdaschool.com'
   },
   {
-    id: 4,
+    id: 5,
     name: 'Dustin',
     age: 25,
     email: 'D-munny@lambdaschool.com'
   },
   {
-    id: 5,
+    id: 6,
     name: 'Sean',
     age: 35,
     email: 'sean@lambdaschool.com'
   },
   {
-    id: 6,
+    id: 7,
     name: 'Michelle',
     age: 67,
     email: 'michelle@gmail.com'
@@ -62,7 +68,7 @@ function authenticator(req, res, next) {
 
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
-  if (username === 'Lambda School' && password === 'i<3Lambd4') {
+  if (username === 'Lambda School' && password === 'Admin') {
     req.loggedIn = true;
     res.status(200).json({
       payload: token
